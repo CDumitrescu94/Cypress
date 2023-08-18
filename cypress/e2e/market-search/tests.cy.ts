@@ -8,7 +8,7 @@ describe("Products verification", () => {
         
       })
 
-      it("Compare selected product price with the product's details page price", () => {
+      it("Compare search result product details with the product's details page information", () => {
         cy.get(Selectors.acceptCookiesBtn).click();
         cy.readFile("inputFile.csv").then((config) => {
 
@@ -19,7 +19,7 @@ describe("Products verification", () => {
                 cy.get(Selectors.searchBtn).click();
 
                 var searchResultProduct = new SearchResultProduct();
-                searchResultProduct.setDetails(3);
+                searchResultProduct.setDetails(4);
                 searchResultProduct.image.click().then(() => {
                     cy.get(Selectors.productDetailsPagePrice).eq(0).should('have.text', searchResultProduct.price)
                     cy.get(Selectors.productDetailsPageTitle).should($title => expect($title.text().trim()).to.equal(searchResultProduct.title))                   
@@ -28,7 +28,7 @@ describe("Products verification", () => {
         })
     })
 
-    it("Compare selected product price with the product's details page price", () => {
+    it("Compare search result product price with the product's details page price", () => {
         cy.get(Selectors.acceptCookiesBtn).click();
         cy.readFile("inputFile.csv").then((config) => {
 
@@ -47,7 +47,7 @@ describe("Products verification", () => {
         })
     })
 
-    it("Compare selected product title with the product's details page title", () => {
+    it("Compare search result product title with the product's details page title", () => {
         
         cy.readFile("inputFile.txt").then((config) => {
 
