@@ -1,13 +1,35 @@
 import { Selectors } from "./Selectors"
+import  { SearchResultProduct }  from "./SearchResultProduct"
 
 describe("Products verification", () => {
     beforeEach(() => {
         cy.viewport(1920, 1280);
         cy.visit("https://www.amazon.de/")      
-        cy.get(Selectors.acceptCookiesBtn).click();
-      })
-    it("Compare selected product price with the product's details page price", () => {
         
+      })
+
+      it("Compare selected product price with the product's details page price", () => {
+        cy.get(Selectors.acceptCookiesBtn).click();
+        cy.readFile("inputFile.csv").then((config) => {
+
+            let fileLines = config.split(",")
+            fileLines.forEach((line: string) => {
+           
+                cy.get(Selectors.searchBarInput).clear().type(line);
+                cy.get(Selectors.searchBtn).click();
+
+                var searchResultProduct = new SearchResultProduct();
+                searchResultProduct.setDetails(3);
+                searchResultProduct.image.click().then(() => {
+                    cy.get(Selectors.productDetailsPagePrice).eq(0).should('have.text', searchResultProduct.price)
+                    cy.get(Selectors.productDetailsPageTitle).should($title => expect($title.text().trim()).to.equal(searchResultProduct.title))                   
+                });    
+            });       
+        })
+    })
+
+    it("Compare selected product price with the product's details page price", () => {
+        cy.get(Selectors.acceptCookiesBtn).click();
         cy.readFile("inputFile.csv").then((config) => {
 
             let fileLines = config.split(",")
